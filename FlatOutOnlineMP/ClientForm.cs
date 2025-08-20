@@ -1,6 +1,8 @@
 ﻿using FlatOutOnlineMP.Logger;
 using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -85,11 +87,6 @@ namespace FlatOutOnlineMP
             Connect(ip, port, username);
         }
 
-        private void StartGameButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void clearToolStripMenuItem_Click(object sender, EventArgs e) => LogsTextBox.ResetText();
 
         private void copySelectedToolStripMenuItem_Click(object sender, EventArgs e) => LogsTextBox.Copy();
@@ -125,6 +122,69 @@ namespace FlatOutOnlineMP
                     return;
                 SendMsgButton.PerformClick();
             }
+        }
+
+        private static bool IsPathFullyQualified(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return false;
+            string root = Path.GetPathRoot(path);
+            return root.StartsWith(@"\\") || root.EndsWith(@"\") && root != @"\";
+        }
+
+        public static void PerformPathChecks(string exePath, bool checkExists = true)
+        {
+            if (!IsPathFullyQualified(exePath))
+                throw new ArgumentException("Path must be fully qualified");
+            if (Path.GetExtension(exePath) != ".exe")
+                throw new ArgumentException("File must be an executable");
+            if (checkExists && !File.Exists(exePath))
+                throw new ArgumentException("File does not exist");
+        }
+
+        private void StartGameButton_Click(object sender, EventArgs e)
+        {
+            if (!isStreamingAvailable || !isStreaming)
+                return;
+            DialogResult result = BrowseOFD.ShowDialog();
+
+            if (result != DialogResult.OK)
+                return;
+
+            string exePath = BrowseOFD.FileName.Trim();
+            try
+            {
+                PerformPathChecks(exePath);
+            }
+            catch (ArgumentException ex)
+            {
+                Logger.LogShowError(ex.Message, "Invalid file");
+                return;
+            }
+
+            Process.Start(new ProcessStartInfo()
+            {
+                FileName = exePath,
+                WorkingDirectory = Path.GetDirectoryName(exePath),
+                Arguments = $"-lan -join=127.0.0.1:{streamPort}"
+            });
+        }
+
+        private void StreamButton_Click(object sender, EventArgs e)
+        {
+            if (!isStreamingAvailable)
+            {
+                Logger.LogShowError("Streaming is unavailable");
+                return;
+            }
+            if (isStreaming)
+            {
+                Logger.LogInfo("Stop streaming");
+                StopStreaming();
+                return;
+            }
+            Logger.LogInfo("Start streaming");
+            StartStreaming();
         }
     }
 }
