@@ -1,0 +1,130 @@
+﻿using FlatOutOnlineMP.Logger;
+using System;
+using System.Drawing;
+using System.Net;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
+
+namespace FlatOutOnlineMP
+{
+    internal partial class ClientForm : Form
+    {
+        private static ILogger Logger => Program.Logger;
+
+        public ClientForm()
+        {
+            InitializeComponent();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            Program.Logger = new FormLogger(LogsTextBox);
+            Cleanup();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (isConnected && e.CloseReason == CloseReason.UserClosing)
+            {
+                DialogResult result = MessageBox.Show("Closing the application will end the current connection, " +
+                    "are you sure you want to continue?", "Connected warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result != DialogResult.Yes)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+            Cleanup();
+        }
+
+        private void SetStatus(string status, Color color)
+        {
+            this.InvokeIfRequired(() =>
+            {
+                StatusValueLabel.Text = status;
+                StatusValueLabel.ForeColor = color;
+            });
+        }
+
+        private void ConnectButton_Click(object sender, EventArgs e)
+        {
+            if (isConnected)
+            {
+                Logger.LogInfo("Disconnecting");
+                Cleanup();
+                return;
+            }
+
+            string[] remote = RemoteHostBox.Text.Trim().Split(new char[] { ':' }, 2);
+            string ip = remote.Length > 0 ? remote[0] : null;
+            int port = MainForm.DEFAULT_PORT;
+
+            if (string.IsNullOrEmpty(ip) || !IPAddress.TryParse(ip, out _))
+            {
+                Logger.LogShowError("Invalid remote host");
+                return;
+            }
+
+            if ((remote.Length > 1 && !int.TryParse(remote[1], out port)) || port < 0 || port > 65535)
+            {
+                Logger.LogShowError("Invalid remote port");
+                return;
+            }
+
+            string username = Regex.Replace(UsernameBox.Text.Trim(), @"[^a-zA-Z0-9_]", "");
+            if (username.Length > 16)
+                username = username.Substring(0, 16);
+            UsernameBox.Text = username;
+            if (string.IsNullOrEmpty(username) || username.Length < 3 || username.Length > 16)
+            {
+                Logger.LogShowError($"Username too short or is invalid!{Environment.NewLine}" +
+                    $"Must be between 3 and 16 characters long and be made up of a-z, A-Z, 0-9 or _");
+                return;
+            }
+
+            Connect(ip, port, username);
+        }
+
+        private void StartGameButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e) => LogsTextBox.ResetText();
+
+        private void copySelectedToolStripMenuItem_Click(object sender, EventArgs e) => LogsTextBox.Copy();
+
+        private void selectAllToolStripMenuItem_Click(object sender, EventArgs e) => LogsTextBox.SelectAll();
+
+        private void SendMsgButton_Click(object sender, EventArgs e)
+        {
+            if (!isConnected)
+                return;
+            string msg = Regex.Replace(ChatMsgBox.Text.Trim(), @"[^\x20-\x7F]", "");
+            if (string.IsNullOrEmpty(msg))
+            {
+                Logger.LogShowError("Invalid or empty message");
+                return;
+            }
+            ChatMsgBox.Text = "";
+            SendMessage(msg);
+        }
+
+        private void ChatMsgBox_TextChanged(object sender, EventArgs e)
+        {
+            // Originally also did the regex test, but this should be enough
+            SendMsgButton.Enabled = !string.IsNullOrEmpty(ChatMsgBox.Text.Trim());
+        }
+
+        private void ChatMsgBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                if (!SendMsgButton.Enabled)
+                    return;
+                SendMsgButton.PerformClick();
+            }
+        }
+    }
+}
