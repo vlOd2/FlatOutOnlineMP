@@ -95,5 +95,18 @@ namespace FlatOutOnlineMP
                 SendMsgButton.PerformClick();
             }
         }
+
+        private void StreamButton_Click(object sender, EventArgs e)
+        {
+            if (isStreaming)
+            {
+                Logger.LogInfo("Stop streaming game data");
+                StopStream();
+                return;
+            }
+            int port = Math.Min(Math.Max(0, (int)ListenPortNUPD.Value), 65535);
+            Logger.LogInfo($"Start streaming game data (port: {port})");
+            StartStream(port);
+        }
     }
 }

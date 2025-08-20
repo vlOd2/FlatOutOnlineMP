@@ -14,5 +14,7 @@ namespace FlatOutOnlineMP.Network
         void BroadcastMessage(string msg, params ServerHandler[] exclusions);
 
         void SetHandlerState(ServerHandler handler, string state);
+
+        int GetStreamPort();
     }
 }

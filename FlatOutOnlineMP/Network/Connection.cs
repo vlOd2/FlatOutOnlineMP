@@ -1,12 +1,11 @@
-﻿using FlatOutOnlineMP.Network;
-using System;
+﻿using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace FlatOutOnlineMP
+namespace FlatOutOnlineMP.Network
 {
     internal class Connection : IDisposable
     {

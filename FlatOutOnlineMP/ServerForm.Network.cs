@@ -15,6 +15,8 @@ namespace FlatOutOnlineMP
         private bool isListening;
         private Socket listener;
         private List<ServerHandler> clients = new List<ServerHandler>();
+        private bool isStreaming;
+        private int streamPort;
 
         private void PopulateAddresses()
         {
@@ -39,6 +41,7 @@ namespace FlatOutOnlineMP
 
             ListenPortNUPD.Enabled = false;
             ChatMsgBox.Enabled = true;
+            StreamButton.Enabled = true;
             ListenButton.Text = "Stop listening";
             
             try
@@ -134,6 +137,7 @@ namespace FlatOutOnlineMP
                 CleanupTimer.Stop();
                 SetStatus("Not listening", Color.Red);
 
+                StopStream();
                 foreach (ServerHandler handler in clients)
                     handler.Dispose();
                 clients.Clear();
@@ -142,6 +146,7 @@ namespace FlatOutOnlineMP
 
                 ListenPortNUPD.Enabled = true;
                 ChatMsgBox.Enabled = false;
+                StreamButton.Enabled = false;
                 SendMsgButton.Enabled = false;
                 ListenButton.Text = "Start listening";
                 ChatMsgBox.Text = "";
@@ -197,6 +202,8 @@ namespace FlatOutOnlineMP
             }
         }
 
+        int IServer.GetStreamPort() => isStreaming && streamPort > 0 ? streamPort : -1;
+
         private void SendHostMessage(string msg)
         {
             string formatted = $"(HOST): {msg}";
@@ -204,6 +211,45 @@ namespace FlatOutOnlineMP
                 formatted = formatted.Substring(0, 255);
             ((IServer)this).BroadcastMessage(formatted);
             Logger.LogInfo(formatted);
+        }
+
+        private void StartStream(int port)
+        {
+            isStreaming = true;
+            streamPort = port;
+
+            GamePortNUPD.Enabled = false;
+            StreamButton.Text = "Stop streaming";
+
+            lock (clients)
+            {
+                foreach (ServerHandler handler in clients)
+                {
+                    if (handler.Username == null)
+                        continue;
+                    handler.StartStreaming(port);
+                }
+            }
+        }
+
+        private void StopStream()
+        {
+            isStreaming = false;
+            streamPort = 0;
+
+            lock (clients)
+            {
+                foreach (ServerHandler handler in clients)
+                {
+                    if (handler.Username == null)
+                        continue;
+                    handler.StopStreaming();
+                }
+            }
+
+            GamePortNUPD.Enabled = true;
+            StreamButton.Enabled = true;
+            StreamButton.Text = "Start streaming";
         }
     }
 }

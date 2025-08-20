@@ -40,6 +40,9 @@
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.StreamButton = new System.Windows.Forms.Button();
+            this.GamePortNUPD = new System.Windows.Forms.NumericUpDown();
             this.StatusValueLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.InfoTree = new System.Windows.Forms.TreeView();
@@ -58,6 +61,7 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PlayersDGV)).BeginInit();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.GamePortNUPD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ListenPortNUPD)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.LogsCTX.SuspendLayout();
@@ -124,6 +128,9 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.StreamButton);
+            this.groupBox2.Controls.Add(this.GamePortNUPD);
             this.groupBox2.Controls.Add(this.StatusValueLabel);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.InfoTree);
@@ -137,12 +144,45 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Manage";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 55);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(59, 13);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "Game port:";
+            // 
+            // StreamButton
+            // 
+            this.StreamButton.Enabled = false;
+            this.StreamButton.Location = new System.Drawing.Point(9, 126);
+            this.StreamButton.Name = "StreamButton";
+            this.StreamButton.Size = new System.Drawing.Size(129, 23);
+            this.StreamButton.TabIndex = 11;
+            this.StreamButton.Text = "Start streaming";
+            this.StreamButton.UseVisualStyleBackColor = true;
+            this.StreamButton.Click += new System.EventHandler(this.StreamButton_Click);
+            // 
+            // GamePortNUPD
+            // 
+            this.GamePortNUPD.Enabled = false;
+            this.GamePortNUPD.Location = new System.Drawing.Point(9, 71);
+            this.GamePortNUPD.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.GamePortNUPD.Name = "GamePortNUPD";
+            this.GamePortNUPD.Size = new System.Drawing.Size(129, 20);
+            this.GamePortNUPD.TabIndex = 10;
+            // 
             // StatusValueLabel
             // 
             this.StatusValueLabel.AutoSize = true;
             this.StatusValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.StatusValueLabel.ForeColor = System.Drawing.Color.Red;
-            this.StatusValueLabel.Location = new System.Drawing.Point(45, 84);
+            this.StatusValueLabel.Location = new System.Drawing.Point(45, 152);
             this.StatusValueLabel.Name = "StatusValueLabel";
             this.StatusValueLabel.Size = new System.Drawing.Size(30, 13);
             this.StatusValueLabel.TabIndex = 9;
@@ -151,7 +191,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 84);
+            this.label2.Location = new System.Drawing.Point(6, 152);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 13);
             this.label2.TabIndex = 8;
@@ -163,7 +203,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.InfoTree.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.InfoTree.Cursor = System.Windows.Forms.Cursors.Default;
-            this.InfoTree.Location = new System.Drawing.Point(9, 100);
+            this.InfoTree.Location = new System.Drawing.Point(9, 168);
             this.InfoTree.Name = "InfoTree";
             treeNode1.Name = "addresses";
             treeNode1.Text = "Addresses";
@@ -174,7 +214,7 @@
             this.InfoTree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode3});
             this.InfoTree.ShowRootLines = false;
-            this.InfoTree.Size = new System.Drawing.Size(129, 319);
+            this.InfoTree.Size = new System.Drawing.Size(129, 251);
             this.InfoTree.TabIndex = 4;
             // 
             // label1
@@ -188,7 +228,7 @@
             // 
             // ListenButton
             // 
-            this.ListenButton.Location = new System.Drawing.Point(9, 58);
+            this.ListenButton.Location = new System.Drawing.Point(9, 97);
             this.ListenButton.Name = "ListenButton";
             this.ListenButton.Size = new System.Drawing.Size(129, 23);
             this.ListenButton.TabIndex = 1;
@@ -226,6 +266,7 @@
             // SendMsgButton
             // 
             this.SendMsgButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.SendMsgButton.Enabled = false;
             this.SendMsgButton.Location = new System.Drawing.Point(276, 194);
             this.SendMsgButton.Name = "SendMsgButton";
             this.SendMsgButton.Size = new System.Drawing.Size(75, 23);
@@ -238,6 +279,7 @@
             // 
             this.ChatMsgBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.ChatMsgBox.Enabled = false;
             this.ChatMsgBox.Location = new System.Drawing.Point(3, 195);
             this.ChatMsgBox.MaxLength = 255;
             this.ChatMsgBox.Name = "ChatMsgBox";
@@ -313,6 +355,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.PlayersDGV)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.GamePortNUPD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ListenPortNUPD)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
@@ -343,5 +386,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn state;
         private System.Windows.Forms.DataGridViewTextBoxColumn name;
         private System.Windows.Forms.DataGridViewTextBoxColumn address;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button StreamButton;
+        private System.Windows.Forms.NumericUpDown GamePortNUPD;
     }
 }

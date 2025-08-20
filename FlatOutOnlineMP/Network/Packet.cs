@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Linq;
 
-namespace FlatOutOnlineMP
+namespace FlatOutOnlineMP.Network
 {
     internal enum Packet
     {
         LOGIN = 0,
         MESSAGE = 1,
         KICK = 2,
+        STREAM_STATE = 3,
+        STREAM_DATA = 4,
     }
 
     internal static class PacketUtils

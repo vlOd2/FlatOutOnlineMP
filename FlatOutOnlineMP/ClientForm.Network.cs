@@ -9,7 +9,7 @@ using System.Text;
 
 namespace FlatOutOnlineMP
 {
-    internal partial class ClientForm
+    internal partial class ClientForm : IClientEvents
     {
         private bool isConnected;
         private Socket socket;
@@ -54,16 +54,7 @@ namespace FlatOutOnlineMP
                 if (connection.Reader.ReadUInt32() != MainForm.SERVER_MAGIC)
                     throw new IOException("Invalid server magic");
                 socket = null;
-                client = new ClientHandler(connection)
-                {
-                    OnLoggedin = () => this.InvokeIfRequired(() =>
-                    {
-                        SetStatus("Connected", Color.Green);
-                        ChatMsgBox.Enabled = true;
-                        Logger.LogInfo("Connected successfully");
-                    }),
-                    OnDisposed = () => Cleanup()
-                };
+                client = new ClientHandler(this, connection);
                 client.SendLoginPacket((string)result.AsyncState);
             }
             catch (Exception ex)
@@ -104,5 +95,24 @@ namespace FlatOutOnlineMP
                 ChatMsgBox.Text = "";
             });
         }
+
+        void IClientEvents.OnLogin()
+        {
+            SetStatus("Connected", Color.Green);
+            ChatMsgBox.Enabled = true;
+            Logger.LogInfo("Connected successfully");
+        }
+
+        void IClientEvents.OnStreamState(bool state)
+        {
+
+        }
+
+        void IClientEvents.OnStreamData(byte[] data)
+        {
+        
+        }
+
+        void IClientEvents.OnDisconnect() => Cleanup();
     }
 }

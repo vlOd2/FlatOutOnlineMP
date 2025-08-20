@@ -11,15 +11,15 @@ namespace FlatOutOnlineMP.Network
     internal class ClientHandler : IConnectionHandler
     {
         private static ILogger Logger => Program.Logger;
+        private IClientEvents clientEvents;
         private Connection connection;
         private bool disposed;
-        public Action OnLoggedin;
-        public Action OnDisposed;
         private BinaryReader Reader => connection.Reader;
         private BinaryWriter Writer => connection.Writer;
 
-        public ClientHandler(Connection connection)
+        public ClientHandler(IClientEvents clientEvents, Connection connection)
         {
+            this.clientEvents = clientEvents;
             this.connection = connection;
             connection.Handler = this;
             connection.Start();
@@ -31,8 +31,7 @@ namespace FlatOutOnlineMP.Network
             {
                 case Packet.LOGIN:
                     {
-                        OnLoggedin?.Invoke();
-                        OnLoggedin = null;
+                        clientEvents.OnLogin();
                         break;
                     }
 
@@ -47,6 +46,21 @@ namespace FlatOutOnlineMP.Network
                         string reason = Reader.ReadASCIIStr();
                         Dispose();
                         Logger.LogShowError($"Kicked by server: {reason}", "Kicked");
+                        break;
+                    }
+
+                case Packet.STREAM_STATE:
+                    {
+                        clientEvents.OnStreamState(Reader.ReadBoolean());
+                        break;
+                    }
+
+                case Packet.STREAM_DATA:
+                    {
+                        ushort length = Reader.ReadUInt16();
+                        if (length > 256)
+                            throw new IOException("Illegal stream data size");
+                        clientEvents.OnStreamData(Reader.ReadExactly(length));
                         break;
                     }
             }
@@ -73,6 +87,14 @@ namespace FlatOutOnlineMP.Network
             Writer.Flush();
         }
 
+        public void SendStreamData(byte[] data)
+        {
+            Writer.Write((byte)Packet.STREAM_DATA);
+            Writer.Write((ushort)data.Length);
+            Writer.Write(data);
+            Writer.Flush();
+        }
+
         public void OnConnectionError(Exception ex)
         {
             Logger.LogError($"Connection error: {ex}");
@@ -90,9 +112,10 @@ namespace FlatOutOnlineMP.Network
             if (disposed)
                 return;
             disposed = true;
-            OnDisposed?.Invoke();
+            clientEvents.OnDisconnect();
             connection?.Dispose();
             connection = null;
+            clientEvents = null;
         }
     }
 }
