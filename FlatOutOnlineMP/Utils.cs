@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 
 namespace FlatOutOnlineMP
 {
@@ -58,6 +59,22 @@ namespace FlatOutOnlineMP
                 throw new ArgumentException("File must be an executable");
             if (checkExists && !File.Exists(exePath))
                 throw new ArgumentException("File does not exist");
+        }
+
+        public static bool ValidateRemoteAddress(string address)
+        {
+            try
+            {
+                if (IPAddress.TryParse(address, out _))
+                    return true;
+                if (Dns.GetHostEntry(address).AddressList.Length > 0)
+                    return true;
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

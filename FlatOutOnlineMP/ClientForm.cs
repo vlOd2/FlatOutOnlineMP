@@ -59,7 +59,7 @@ namespace FlatOutOnlineMP
             string ip = remote.Length > 0 ? remote[0] : null;
             int port = MainForm.DEFAULT_PORT;
 
-            if (string.IsNullOrEmpty(ip) || !IPAddress.TryParse(ip, out _))
+            if (string.IsNullOrEmpty(ip))
             {
                 Logger.LogShowError("Invalid remote host");
                 return;

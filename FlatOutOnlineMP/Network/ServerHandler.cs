@@ -75,12 +75,6 @@ namespace FlatOutOnlineMP.Network
 
                 case Packet.STREAM_DATA:
                     {
-                        if (!isStreaming)
-                        {
-                            Logger.LogWarn($"{connection.RemoteAddress} sent stream data, but not streaming");
-                            return;
-                        }
-
                         ushort count = Reader.ReadUInt16();
                         if (count > 256)
                         {
@@ -89,7 +83,12 @@ namespace FlatOutOnlineMP.Network
                         }
 
                         byte[] data = Reader.ReadExactly(count);
-                        //Logger.LogInfo($"Stream {connection.RemoteAddress} >>> {count} bytes");
+                        if (!isStreaming)
+                        {
+                            Logger.LogWarn($"{connection.RemoteAddress} sent stream data, but not streaming");
+                            return;
+                        }
+
                         try
                         {
                             streamSocket.Send(data);
@@ -149,7 +148,6 @@ namespace FlatOutOnlineMP.Network
                 {
                     if (!isStreaming)
                         return;
-                    //Logger.LogInfo($"Stream {connection.RemoteAddress} <<< {data.Length} bytes");
                     SendStreamData(data);
                 },
                 OnError = (ex) =>
