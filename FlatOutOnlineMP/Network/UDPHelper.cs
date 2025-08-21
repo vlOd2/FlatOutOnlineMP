@@ -9,7 +9,14 @@ namespace FlatOutOnlineMP.Network
         public const int SIO_UDP_CONNRESET = -1744830452;
 
         public static void SuppressICMP(Socket socket)
-            => socket.IOControl((IOControlCode)SIO_UDP_CONNRESET, new byte[] { 0, 0, 0, 0 }, null);
+        {
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+            {
+                Program.Logger.LogInfo("Ignoring ICMP suppress (not on Windows)");
+                return;
+            }
+            socket.IOControl((IOControlCode)SIO_UDP_CONNRESET, new byte[] { 0, 0, 0, 0 }, null);
+        }
 
         public static void ReceiveUDPLoop(Socket socket, Action<IPEndPoint, byte[]> onData, Action<Exception> onError)
             => ReceiveUDPLoop(socket, onData, onError, new byte[256]);
