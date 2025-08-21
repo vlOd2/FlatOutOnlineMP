@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using static System.Windows.Forms.AxHost;
 
 namespace FlatOutOnlineMP
 {
@@ -108,7 +109,7 @@ namespace FlatOutOnlineMP
         {
             if (!isStreamingAvailable)
                 return;
-            isStreaming = true;
+            isStreaming = StartGameButton.Enabled = true;
             StreamButton.Text = "Stop stream";
             streamSocket = new GameSocket()
             {
@@ -132,7 +133,7 @@ namespace FlatOutOnlineMP
 
         private void StopStreaming()
         {
-            isStreaming = false;
+            isStreaming = StartGameButton.Enabled = false;
             StreamButton.Text = "Start stream";
             streamSocket?.Dispose();
             streamPort = 0;
@@ -157,7 +158,6 @@ namespace FlatOutOnlineMP
 
                 isStreamingAvailable = state;
                 StreamButton.Enabled = state;
-                StartGameButton.Enabled = state;
                 CanStreamCB.Checked = state;
 
                 if (!state && isStreaming)

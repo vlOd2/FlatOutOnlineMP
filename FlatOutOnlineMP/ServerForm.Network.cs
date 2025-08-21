@@ -145,8 +145,9 @@ namespace FlatOutOnlineMP
                 listener = null;
 
                 ListenPortNUPD.Enabled = true;
-                ChatMsgBox.Enabled = false;
                 StreamButton.Enabled = false;
+                StartGameButton.Enabled = false;
+                ChatMsgBox.Enabled = false;
                 SendMsgButton.Enabled = false;
                 ListenButton.Text = "Start listening";
                 ChatMsgBox.Text = "";
@@ -220,6 +221,7 @@ namespace FlatOutOnlineMP
             streamPort = port;
 
             GamePortNUPD.Enabled = false;
+            StartGameButton.Enabled = true;
             StreamButton.Text = "Stop streaming";
 
             lock (clients)
@@ -250,6 +252,7 @@ namespace FlatOutOnlineMP
 
             GamePortNUPD.Enabled = true;
             StreamButton.Enabled = true;
+            StartGameButton.Enabled = false;
             StreamButton.Text = "Start streaming";
         }
     }

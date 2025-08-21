@@ -108,5 +108,12 @@ namespace FlatOutOnlineMP
             Logger.LogInfo($"Start streaming game data (port: {port})");
             StartStream(port);
         }
+
+        private void StartGameButton_Click(object sender, EventArgs e)
+        {
+            if (!isStreaming)
+                return;
+            MainForm.StartGame(BrowseOFD, $"-host -lan");
+        }
     }
 }

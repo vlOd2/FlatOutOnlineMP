@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Addresses");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Port");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Connection info", new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Addresses");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Port");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Connection info", new System.Windows.Forms.TreeNode[] {
+            treeNode7,
+            treeNode8});
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.PlayersDGV = new System.Windows.Forms.DataGridView();
             this.state = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -58,6 +58,8 @@
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CleanupTimer = new System.Windows.Forms.Timer(this.components);
+            this.StartGameButton = new System.Windows.Forms.Button();
+            this.BrowseOFD = new System.Windows.Forms.OpenFileDialog();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PlayersDGV)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -128,6 +130,7 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox2.Controls.Add(this.StartGameButton);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.StreamButton);
             this.groupBox2.Controls.Add(this.GamePortNUPD);
@@ -187,7 +190,7 @@
             this.StatusValueLabel.AutoSize = true;
             this.StatusValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.StatusValueLabel.ForeColor = System.Drawing.Color.Red;
-            this.StatusValueLabel.Location = new System.Drawing.Point(45, 152);
+            this.StatusValueLabel.Location = new System.Drawing.Point(45, 179);
             this.StatusValueLabel.Name = "StatusValueLabel";
             this.StatusValueLabel.Size = new System.Drawing.Size(30, 13);
             this.StatusValueLabel.TabIndex = 9;
@@ -196,7 +199,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 152);
+            this.label2.Location = new System.Drawing.Point(6, 179);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 13);
             this.label2.TabIndex = 8;
@@ -208,18 +211,18 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.InfoTree.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.InfoTree.Cursor = System.Windows.Forms.Cursors.Default;
-            this.InfoTree.Location = new System.Drawing.Point(9, 168);
+            this.InfoTree.Location = new System.Drawing.Point(9, 195);
             this.InfoTree.Name = "InfoTree";
-            treeNode1.Name = "addresses";
-            treeNode1.Text = "Addresses";
-            treeNode2.Name = "port";
-            treeNode2.Text = "Port";
-            treeNode3.Name = "root";
-            treeNode3.Text = "Connection info";
+            treeNode7.Name = "addresses";
+            treeNode7.Text = "Addresses";
+            treeNode8.Name = "port";
+            treeNode8.Text = "Port";
+            treeNode9.Name = "root";
+            treeNode9.Text = "Connection info";
             this.InfoTree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3});
+            treeNode9});
             this.InfoTree.ShowRootLines = false;
-            this.InfoTree.Size = new System.Drawing.Size(129, 251);
+            this.InfoTree.Size = new System.Drawing.Size(129, 224);
             this.InfoTree.TabIndex = 4;
             // 
             // label1
@@ -342,6 +345,25 @@
             // 
             this.CleanupTimer.Tick += new System.EventHandler(this.CleanupTimer_Tick);
             // 
+            // StartGameButton
+            // 
+            this.StartGameButton.Enabled = false;
+            this.StartGameButton.Location = new System.Drawing.Point(9, 153);
+            this.StartGameButton.Name = "StartGameButton";
+            this.StartGameButton.Size = new System.Drawing.Size(129, 23);
+            this.StartGameButton.TabIndex = 13;
+            this.StartGameButton.Text = "Start game";
+            this.StartGameButton.UseVisualStyleBackColor = true;
+            this.StartGameButton.Click += new System.EventHandler(this.StartGameButton_Click);
+            // 
+            // BrowseOFD
+            // 
+            this.BrowseOFD.DefaultExt = "exe";
+            this.BrowseOFD.FileName = "flatout.exe";
+            this.BrowseOFD.Filter = "Executable files|*.exe";
+            this.BrowseOFD.InitialDirectory = "C:\\Program Files (x86)\\Empire Interactive\\FlatOut";
+            this.BrowseOFD.Title = "Select game executable";
+            // 
             // ServerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -394,5 +416,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button StreamButton;
         private System.Windows.Forms.NumericUpDown GamePortNUPD;
+        private System.Windows.Forms.Button StartGameButton;
+        private System.Windows.Forms.OpenFileDialog BrowseOFD;
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace FlatOutOnlineMP
@@ -26,6 +28,32 @@ namespace FlatOutOnlineMP
             Hide();
             new ServerForm().ShowDialog();
             Close();
+        }
+
+        public static void StartGame(OpenFileDialog openDialog, string args)
+        {
+            DialogResult result = openDialog.ShowDialog();
+
+            if (result != DialogResult.OK)
+                return;
+
+            string exePath = openDialog.FileName.Trim();
+            try
+            {
+                Utils.PerformPathChecks(exePath);
+            }
+            catch (ArgumentException ex)
+            {
+                Program.Logger.LogShowError(ex.Message, "Invalid file");
+                return;
+            }
+
+            Process.Start(new ProcessStartInfo()
+            {
+                FileName = exePath,
+                WorkingDirectory = Path.GetDirectoryName(exePath),
+                Arguments = args
+            });
         }
     }
 }

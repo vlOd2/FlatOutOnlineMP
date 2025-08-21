@@ -1,6 +1,7 @@
 ﻿using FlatOutOnlineMP.Logger;
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
@@ -79,12 +80,14 @@ namespace FlatOutOnlineMP.Network
                             Logger.LogWarn($"{connection.RemoteAddress} sent stream data, but not streaming");
                             return;
                         }
+
                         ushort count = Reader.ReadUInt16();
                         if (count > 256)
                         {
                             Kick("Illegal stream data size");
                             return;
                         }
+
                         byte[] data = Reader.ReadExactly(count);
                         //Logger.LogInfo($"Stream {connection.RemoteAddress} >>> {count} bytes");
                         try
@@ -95,6 +98,7 @@ namespace FlatOutOnlineMP.Network
                         {
                             Logger.LogError($"Stream write error ({connection.RemoteAddress}): {ex}");
                         }
+
                         break;
                     }
             }

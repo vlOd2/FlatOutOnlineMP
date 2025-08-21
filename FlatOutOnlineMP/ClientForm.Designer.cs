@@ -229,7 +229,6 @@
             // 
             this.CanStreamCB.AutoCheck = false;
             this.CanStreamCB.AutoSize = true;
-            this.CanStreamCB.Enabled = false;
             this.CanStreamCB.Location = new System.Drawing.Point(254, 57);
             this.CanStreamCB.Name = "CanStreamCB";
             this.CanStreamCB.Size = new System.Drawing.Size(79, 17);
