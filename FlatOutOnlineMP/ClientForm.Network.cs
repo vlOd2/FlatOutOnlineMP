@@ -109,7 +109,7 @@ namespace FlatOutOnlineMP
             if (!isStreamingAvailable)
                 return;
             isStreaming = true;
-            StreamButton.Text = "Stop streaming";
+            StreamButton.Text = "Stop stream";
             streamSocket = new GameSocket()
             {
                 OnData = (_, data) =>
@@ -133,7 +133,7 @@ namespace FlatOutOnlineMP
         private void StopStreaming()
         {
             isStreaming = false;
-            StreamButton.Text = "Start streaming";
+            StreamButton.Text = "Start stream";
             streamSocket?.Dispose();
             streamPort = 0;
             streamSocket = null;
