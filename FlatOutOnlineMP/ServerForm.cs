@@ -13,6 +13,7 @@ namespace FlatOutOnlineMP
         public ServerForm()
         {
             InitializeComponent();
+            Text = $"{MainForm.APP_NAME} {MainForm.APP_VERSION} (Server)";
         }
 
         private void ServerForm_Load(object sender, EventArgs e)
@@ -21,6 +22,8 @@ namespace FlatOutOnlineMP
             Cleanup();
             ListenPortNUPD.Value = MainForm.DEFAULT_PORT;
             InfoTree.ExpandAll();
+            Logger.LogInfo($"FlatOutOnlineMP {Application.ProductVersion} - Server mode");
+            Logger.LogInfo($"Protocol version: {MainForm.PROTOCOL_VERSION}");
         }
 
         private void ServerForm_FormClosing(object sender, FormClosingEventArgs e)

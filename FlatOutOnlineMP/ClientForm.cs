@@ -14,12 +14,15 @@ namespace FlatOutOnlineMP
         public ClientForm()
         {
             InitializeComponent();
+            Text = $"{MainForm.APP_NAME} {MainForm.APP_VERSION} (Client)";
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             Program.Logger = new FormLogger(LogsTextBox);
             Cleanup();
+            Logger.LogInfo($"FlatOutOnlineMP {Application.ProductVersion} - Client mode");
+            Logger.LogInfo($"Protocol version: {MainForm.PROTOCOL_VERSION}");
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

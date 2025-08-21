@@ -39,7 +39,7 @@
             this.ClientButton.Name = "ClientButton";
             this.ClientButton.Size = new System.Drawing.Size(129, 62);
             this.ClientButton.TabIndex = 0;
-            this.ClientButton.Text = "Player";
+            this.ClientButton.Text = "Player (Client)";
             this.ClientButton.UseVisualStyleBackColor = true;
             this.ClientButton.Click += new System.EventHandler(this.ClientButton_Click);
             // 
@@ -49,7 +49,7 @@
             this.ServerButton.Name = "ServerButton";
             this.ServerButton.Size = new System.Drawing.Size(129, 62);
             this.ServerButton.TabIndex = 1;
-            this.ServerButton.Text = "Host";
+            this.ServerButton.Text = "Host (Server)";
             this.ServerButton.UseVisualStyleBackColor = true;
             this.ServerButton.Click += new System.EventHandler(this.ServerButton_Click);
             // 
@@ -74,7 +74,6 @@
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.ShowIcon = false;
-            this.Text = "FlatOutOnlineMP";
             this.ResumeLayout(false);
             this.PerformLayout();
 

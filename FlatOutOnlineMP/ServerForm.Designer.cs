@@ -29,17 +29,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Addresses");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Port");
-            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Connection info", new System.Windows.Forms.TreeNode[] {
-            treeNode7,
-            treeNode8});
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Addresses");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Port");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Connection info", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2});
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.PlayersDGV = new System.Windows.Forms.DataGridView();
             this.state = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.StartGameButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.StreamButton = new System.Windows.Forms.Button();
             this.GamePortNUPD = new System.Windows.Forms.NumericUpDown();
@@ -58,7 +59,6 @@
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CleanupTimer = new System.Windows.Forms.Timer(this.components);
-            this.StartGameButton = new System.Windows.Forms.Button();
             this.BrowseOFD = new System.Windows.Forms.OpenFileDialog();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PlayersDGV)).BeginInit();
@@ -147,6 +147,17 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Manage";
             // 
+            // StartGameButton
+            // 
+            this.StartGameButton.Enabled = false;
+            this.StartGameButton.Location = new System.Drawing.Point(9, 153);
+            this.StartGameButton.Name = "StartGameButton";
+            this.StartGameButton.Size = new System.Drawing.Size(129, 23);
+            this.StartGameButton.TabIndex = 13;
+            this.StartGameButton.Text = "Start game";
+            this.StartGameButton.UseVisualStyleBackColor = true;
+            this.StartGameButton.Click += new System.EventHandler(this.StartGameButton_Click);
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -213,14 +224,14 @@
             this.InfoTree.Cursor = System.Windows.Forms.Cursors.Default;
             this.InfoTree.Location = new System.Drawing.Point(9, 195);
             this.InfoTree.Name = "InfoTree";
-            treeNode7.Name = "addresses";
-            treeNode7.Text = "Addresses";
-            treeNode8.Name = "port";
-            treeNode8.Text = "Port";
-            treeNode9.Name = "root";
-            treeNode9.Text = "Connection info";
+            treeNode1.Name = "addresses";
+            treeNode1.Text = "Addresses";
+            treeNode2.Name = "port";
+            treeNode2.Text = "Port";
+            treeNode3.Name = "root";
+            treeNode3.Text = "Connection info";
             this.InfoTree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode9});
+            treeNode3});
             this.InfoTree.ShowRootLines = false;
             this.InfoTree.Size = new System.Drawing.Size(129, 224);
             this.InfoTree.TabIndex = 4;
@@ -345,17 +356,6 @@
             // 
             this.CleanupTimer.Tick += new System.EventHandler(this.CleanupTimer_Tick);
             // 
-            // StartGameButton
-            // 
-            this.StartGameButton.Enabled = false;
-            this.StartGameButton.Location = new System.Drawing.Point(9, 153);
-            this.StartGameButton.Name = "StartGameButton";
-            this.StartGameButton.Size = new System.Drawing.Size(129, 23);
-            this.StartGameButton.TabIndex = 13;
-            this.StartGameButton.Text = "Start game";
-            this.StartGameButton.UseVisualStyleBackColor = true;
-            this.StartGameButton.Click += new System.EventHandler(this.StartGameButton_Click);
-            // 
             // BrowseOFD
             // 
             this.BrowseOFD.DefaultExt = "exe";
@@ -375,7 +375,6 @@
             this.Name = "ServerForm";
             this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.Text = "FlatOutOnlineMP - Host";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ServerForm_FormClosing);
             this.Load += new System.EventHandler(this.ServerForm_Load);
             this.groupBox1.ResumeLayout(false);

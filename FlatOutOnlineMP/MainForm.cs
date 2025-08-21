@@ -8,27 +8,28 @@ namespace FlatOutOnlineMP
     internal partial class MainForm : Form
     {
         public const int DEFAULT_PORT = 35762;
+        public const uint PROTOCOL_VERSION = 1;
         public const uint CLIENT_MAGIC = 0x12478145u;
         public const uint SERVER_MAGIC = 0x34568925u;
+        public const string APP_NAME = "FlatOutOnlineMP";
+        public static readonly string APP_VERSION = $"{Application.ProductVersion}/PV_{PROTOCOL_VERSION}";
 
         public MainForm()
         {
             InitializeComponent();
+            Text = APP_NAME;
         }
 
-        private void ClientButton_Click(object sender, EventArgs e)
+        private void ChangeForm(Form form)
         {
             Hide();
-            new ClientForm().ShowDialog();
+            form.ShowDialog();
             Close();
         }
 
-        private void ServerButton_Click(object sender, EventArgs e)
-        {
-            Hide();
-            new ServerForm().ShowDialog();
-            Close();
-        }
+        private void ClientButton_Click(object sender, EventArgs e) => ChangeForm(new ClientForm());
+
+        private void ServerButton_Click(object sender, EventArgs e) => ChangeForm(new ServerForm());
 
         public static void StartGame(OpenFileDialog openDialog, string args)
         {

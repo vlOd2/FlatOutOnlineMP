@@ -89,16 +89,8 @@ namespace FlatOutOnlineMP
                     throw new IOException("Invalid client magic");
                 connection.Writer.Write(MainForm.SERVER_MAGIC);
                 connection.Writer.Flush();
-
-                ServerHandler handler = new ServerHandler(this, connection);
                 lock (clients)
-                    clients.Add(handler);
-
-                this.InvokeIfRequired(() =>
-                {
-                    lock (PlayersDGV)
-                        handler.GUIRowID = PlayersDGV.Rows.Add("LOGIN", "(none)", connection.RemoteAddress.ToString());
-                });
+                    clients.Add(new ServerHandler(this, connection));
             }
             catch (Exception ex)
             {
@@ -122,6 +114,8 @@ namespace FlatOutOnlineMP
                     clients.RemoveAt(i);
                     this.InvokeIfRequired(() =>
                     {
+                        if (handler.GUIRowID == -1)
+                            return;
                         lock (PlayersDGV)
                             PlayersDGV.Rows.RemoveAt(handler.GUIRowID);
                     });
@@ -195,13 +189,21 @@ namespace FlatOutOnlineMP
 
         void IServer.SetHandlerState(ServerHandler handler, string state)
         {
-            if (handler.Disposed)
-                return;
-            lock (PlayersDGV)
+            this.InvokeIfRequired(() =>
             {
-                PlayersDGV.Rows[handler.GUIRowID].Cells["state"].Value = state;
-                PlayersDGV.Rows[handler.GUIRowID].Cells["name"].Value = handler.Username;
-            }
+                if (handler.Disposed)
+                    return;
+                lock (PlayersDGV)
+                {
+                    if (handler.GUIRowID == -1)
+                        handler.GUIRowID = PlayersDGV.Rows.Add(state, handler.Username ?? "(none)", handler.RemoteAddress.ToString());
+                    else
+                    {
+                        PlayersDGV.Rows[handler.GUIRowID].Cells["state"].Value = state;
+                        PlayersDGV.Rows[handler.GUIRowID].Cells["name"].Value = handler.Username ?? "(none)";
+                    }
+                }
+            });
         }
 
         int IServer.GetStreamPort() => isStreaming && streamPort > 0 ? streamPort : -1;

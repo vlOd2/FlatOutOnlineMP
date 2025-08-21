@@ -31,6 +31,9 @@ namespace FlatOutOnlineMP.Network
             {
                 case Packet.LOGIN:
                     {
+                        uint protocolVersion = Reader.ReadUInt32();
+                        if (protocolVersion != MainForm.PROTOCOL_VERSION)
+                            throw new IOException($"Mismatched server protocol version");
                         clientEvents.OnLogin();
                         break;
                     }
@@ -76,6 +79,7 @@ namespace FlatOutOnlineMP.Network
         public void SendLoginPacket(string username)
         {
             Writer.Write((byte)Packet.LOGIN);
+            Writer.Write(MainForm.PROTOCOL_VERSION);
             Writer.WriteASCIIStr(username, 16);
             Writer.Flush();
         }

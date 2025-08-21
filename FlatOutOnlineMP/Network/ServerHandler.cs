@@ -15,8 +15,9 @@ namespace FlatOutOnlineMP.Network
         private Connection connection;
         private BinaryReader Reader => connection.Reader;
         private BinaryWriter Writer => connection.Writer;
+        public IPEndPoint RemoteAddress => connection.RemoteAddress;
         public bool Disposed;
-        public int GUIRowID;
+        public int GUIRowID = -1;
         public string Username;
         private bool isStreaming;
         private string streamLoopback;
@@ -26,9 +27,10 @@ namespace FlatOutOnlineMP.Network
         {
             this.server = server;
             this.connection = connection;
-            connection.Handler = this;
-            connection.Start();
+            this.connection.Handler = this;
+            this.connection.Start();
             Logger.LogInfo($"{connection.RemoteAddress} has connected");
+            this.server.SetHandlerState(this, "LOGIN");
         }
 
         public void HandlePacket(Packet packet)
@@ -38,6 +40,13 @@ namespace FlatOutOnlineMP.Network
                 if (packet != Packet.LOGIN)
                 {
                     Kick("Illegal packet");
+                    return;
+                }
+
+                uint protocolVersion = Reader.ReadUInt32();
+                if (protocolVersion != MainForm.PROTOCOL_VERSION)
+                {
+                    Kick($"Incompatible protocol version");
                     return;
                 }
 
@@ -51,6 +60,7 @@ namespace FlatOutOnlineMP.Network
                 Username = name;
                 server.SetHandlerState(this, "WAITING");
                 Writer.Write((byte)Packet.LOGIN);
+                Writer.Write(MainForm.PROTOCOL_VERSION);
                 Writer.Flush();
 
                 int streamPort = server.GetStreamPort();

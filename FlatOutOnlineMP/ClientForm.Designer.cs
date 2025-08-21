@@ -80,9 +80,9 @@
             // 
             // ConnectButton
             // 
-            this.ConnectButton.Location = new System.Drawing.Point(11, 54);
+            this.ConnectButton.Location = new System.Drawing.Point(11, 57);
             this.ConnectButton.Name = "ConnectButton";
-            this.ConnectButton.Size = new System.Drawing.Size(75, 23);
+            this.ConnectButton.Size = new System.Drawing.Size(83, 23);
             this.ConnectButton.TabIndex = 4;
             this.ConnectButton.Text = "Connect";
             this.ConnectButton.UseVisualStyleBackColor = true;
@@ -217,9 +217,9 @@
             // StartGameButton
             // 
             this.StartGameButton.Enabled = false;
-            this.StartGameButton.Location = new System.Drawing.Point(173, 54);
+            this.StartGameButton.Location = new System.Drawing.Point(189, 57);
             this.StartGameButton.Name = "StartGameButton";
-            this.StartGameButton.Size = new System.Drawing.Size(75, 23);
+            this.StartGameButton.Size = new System.Drawing.Size(83, 23);
             this.StartGameButton.TabIndex = 13;
             this.StartGameButton.Text = "Start game";
             this.StartGameButton.UseVisualStyleBackColor = true;
@@ -229,7 +229,7 @@
             // 
             this.CanStreamCB.AutoCheck = false;
             this.CanStreamCB.AutoSize = true;
-            this.CanStreamCB.Location = new System.Drawing.Point(254, 57);
+            this.CanStreamCB.Location = new System.Drawing.Point(278, 60);
             this.CanStreamCB.Name = "CanStreamCB";
             this.CanStreamCB.Size = new System.Drawing.Size(79, 17);
             this.CanStreamCB.TabIndex = 14;
@@ -239,9 +239,9 @@
             // StreamButton
             // 
             this.StreamButton.Enabled = false;
-            this.StreamButton.Location = new System.Drawing.Point(92, 54);
+            this.StreamButton.Location = new System.Drawing.Point(100, 57);
             this.StreamButton.Name = "StreamButton";
-            this.StreamButton.Size = new System.Drawing.Size(75, 23);
+            this.StreamButton.Size = new System.Drawing.Size(83, 23);
             this.StreamButton.TabIndex = 15;
             this.StreamButton.Text = "Start stream";
             this.StreamButton.UseVisualStyleBackColor = true;
@@ -271,7 +271,6 @@
             this.Name = "ClientForm";
             this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.Text = "FlatOutOnlineMP - Player";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.LogsCTX.ResumeLayout(false);
