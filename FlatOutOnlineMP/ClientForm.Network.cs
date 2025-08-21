@@ -109,6 +109,7 @@ namespace FlatOutOnlineMP
             if (!isStreamingAvailable)
                 return;
             isStreaming = true;
+            StreamButton.Text = "Stop streaming";
             streamSocket = new GameSocket()
             {
                 OnData = (_, data) =>
@@ -122,16 +123,17 @@ namespace FlatOutOnlineMP
                 {
                     if (!isStreaming)
                         return;
-                    Logger.LogWarn($"Stream error: {ex}");
-                    StopStreaming();
+                    Logger.LogError($"Stream read error: {ex}");
                 }
             };
             streamPort = streamSocket.JoinMode();
+            Logger.LogInfo($"Streaming to port: {streamPort}");
         }
 
         private void StopStreaming()
         {
             isStreaming = false;
+            StreamButton.Text = "Start streaming";
             streamSocket?.Dispose();
             streamPort = 0;
             streamSocket = null;
@@ -139,24 +141,31 @@ namespace FlatOutOnlineMP
 
         void IClientEvents.OnLogin()
         {
-            SetStatus("Connected", Color.Green);
-            ChatMsgBox.Enabled = true;
-            Logger.LogInfo("Connected successfully");
+            this.InvokeIfRequired(() =>
+            {
+                SetStatus("Connected", Color.Green);
+                ChatMsgBox.Enabled = true;
+                Logger.LogInfo("Connected successfully");
+            });
         }
 
         void IClientEvents.OnStreamState(bool state)
         {
-            Logger.LogInfo($"Stream availability changed: {state}");
-            isStreamingAvailable = state;
-            StreamButton.Enabled = state;
-            StartGameButton.Enabled = state;
-            CanStreamCB.Checked = state;
-
-            if (!state)
+            this.InvokeIfRequired(() =>
             {
-                Logger.LogWarn($"Stopping stream as it is no longer available");
-                StopStreaming();
-            }
+                Logger.LogInfo($"Stream availability changed: {state}");
+
+                isStreamingAvailable = state;
+                StreamButton.Enabled = state;
+                StartGameButton.Enabled = state;
+                CanStreamCB.Checked = state;
+
+                if (!state && isStreaming)
+                {
+                    Logger.LogWarn($"Stopping stream as it is no longer available");
+                    StopStreaming();
+                }
+            });
         }
 
         void IClientEvents.OnStreamData(byte[] data)
@@ -173,7 +182,7 @@ namespace FlatOutOnlineMP
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex);
+                Logger.LogError($"Stream write error: {ex}");
             }
         }
 

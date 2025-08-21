@@ -15,6 +15,7 @@ namespace FlatOutOnlineMP.Network
         {
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             socket.Bind(new IPEndPoint(IPAddress.Parse(loopback), 0));
+            UDPHelper.SuppressICMP(socket);
             target = new IPEndPoint(IPAddress.Loopback, port);
             Program.Logger.LogInfo($"Game: host mode {port}");
             UDPHelper.ReceiveUDPLoop(socket, OnData, OnError);
@@ -24,6 +25,7 @@ namespace FlatOutOnlineMP.Network
         {
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             socket.Bind(new IPEndPoint(IPAddress.Loopback, 0));
+            UDPHelper.SuppressICMP(socket);
             int port = ((IPEndPoint)socket.LocalEndPoint).Port;
             Program.Logger.LogInfo($"Game: join mode {port}");
             UDPHelper.ReceiveUDPLoop(socket, (remote, data) =>
@@ -39,6 +41,7 @@ namespace FlatOutOnlineMP.Network
         {
             if (target == null)
                 throw new InvalidOperationException("Game has not connected, cannot send");
+            Program.Logger.LogInfo("" + target);
             socket.SendTo(data, target);
         }
 

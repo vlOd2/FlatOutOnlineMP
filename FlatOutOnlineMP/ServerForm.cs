@@ -104,7 +104,7 @@ namespace FlatOutOnlineMP
                 StopStream();
                 return;
             }
-            int port = Math.Min(Math.Max(0, (int)ListenPortNUPD.Value), 65535);
+            int port = Math.Min(Math.Max(0, (int)GamePortNUPD.Value), 65535);
             Logger.LogInfo($"Start streaming game data (port: {port})");
             StartStream(port);
         }

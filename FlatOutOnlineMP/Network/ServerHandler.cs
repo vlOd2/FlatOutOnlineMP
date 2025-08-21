@@ -87,7 +87,14 @@ namespace FlatOutOnlineMP.Network
                         }
                         byte[] data = Reader.ReadExactly(count);
                         Logger.LogInfo($"Stream {connection.RemoteAddress} >>> {count} bytes");
-                        streamSocket.Send(data);
+                        try
+                        {
+                            streamSocket.Send(data);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.LogError($"Stream write error ({connection.RemoteAddress}): {ex}");
+                        }
                         break;
                     }
             }
@@ -145,8 +152,7 @@ namespace FlatOutOnlineMP.Network
                 {
                     if (!isStreaming)
                         return;
-                    Logger.LogWarn($"Stream error ({connection.RemoteAddress}): {ex}");
-                    StopStreaming();
+                    Logger.LogError($"Stream read error ({connection.RemoteAddress}): {ex}");
                 }
             };
             streamSocket.HostMode(streamLoopback, gamePort);

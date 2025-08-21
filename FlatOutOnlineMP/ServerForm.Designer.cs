@@ -176,6 +176,11 @@
             this.GamePortNUPD.Name = "GamePortNUPD";
             this.GamePortNUPD.Size = new System.Drawing.Size(129, 20);
             this.GamePortNUPD.TabIndex = 10;
+            this.GamePortNUPD.Value = new decimal(new int[] {
+            23756,
+            0,
+            0,
+            0});
             // 
             // StatusValueLabel
             // 

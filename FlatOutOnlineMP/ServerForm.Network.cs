@@ -153,6 +153,7 @@ namespace FlatOutOnlineMP
 
                 InfoTree.TopNode.Nodes["addresses"].Nodes.Clear();
                 InfoTree.TopNode.Nodes["port"].Nodes.Clear();
+                PlayersDGV.Rows.Clear();
             });
         }
 
