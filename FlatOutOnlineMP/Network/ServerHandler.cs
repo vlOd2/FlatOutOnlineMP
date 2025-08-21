@@ -86,7 +86,7 @@ namespace FlatOutOnlineMP.Network
                             return;
                         }
                         byte[] data = Reader.ReadExactly(count);
-                        Logger.LogInfo($"Stream {connection.RemoteAddress} >>> {count} bytes");
+                        //Logger.LogInfo($"Stream {connection.RemoteAddress} >>> {count} bytes");
                         try
                         {
                             streamSocket.Send(data);
@@ -145,7 +145,7 @@ namespace FlatOutOnlineMP.Network
                 {
                     if (!isStreaming)
                         return;
-                    Logger.LogInfo($"Stream {connection.RemoteAddress} <<< {data.Length} bytes");
+                    //Logger.LogInfo($"Stream {connection.RemoteAddress} <<< {data.Length} bytes");
                     SendStreamData(data);
                 },
                 OnError = (ex) =>

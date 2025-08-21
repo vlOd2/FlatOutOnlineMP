@@ -116,7 +116,7 @@ namespace FlatOutOnlineMP
                 {
                     if (!isStreaming || !isConnected)
                         return;
-                    Logger.LogInfo($"Stream <<< {data.Length} bytes");
+                    //Logger.LogInfo($"Stream <<< {data.Length} bytes");
                     client.SendStreamData(data);
                 },
                 OnError = (ex) =>
@@ -175,7 +175,7 @@ namespace FlatOutOnlineMP
                 Logger.LogWarn("Not streaming, but received stream data");
                 return;
             }
-            Logger.LogInfo($"Stream >>> {data.Length} bytes");
+            //Logger.LogInfo($"Stream >>> {data.Length} bytes");
             try
             {
                 streamSocket?.Send(data);
