@@ -1,0 +1,8 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="FlatOutOnlineMP/FlatOutOnlineMP.csproj" Id="58afcaef-f749-4e17-bc13-2fa21441d455">
+    <Platform Project="x86" />
+  </Project>
+</Solution>
